@@ -2,13 +2,15 @@
   "name": "game-paralives",
   "version": "0.0.1",
   "private": true,
+  "description": "Vortex extension for Paralives",
   "packageManager": "pnpm@11.0.9",
   "engines": { "node": ">=22" },
   "scripts": {
     "build":       "node gdl/dist/cli.js build",
     "test":        "node gdl/dist/cli.js build && vitest run .gdl-out/tests.gen.ts",
     "test:corpus": "node gdl/dist/cli.js test:corpus",
-    "package":     "node gdl/dist/cli.js package"
+    "package":     "node gdl/dist/cli.js package",
+    "init-gdl":    "cd gdl && pnpm install && pnpm build"
   },
   "devDependencies": {
     "vitest": "^3.0.0"
