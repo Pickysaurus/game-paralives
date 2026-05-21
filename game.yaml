@@ -11,9 +11,19 @@ game:
 stores:
   steam: 1118520
 
-modTypes: []     # added in Task 6
+modTypes:
+  - id: paralives-overlay
+    name: Paralives Overlay
+    path: "${installPath}"
 
-installers: []   # added in Task 6
+installers:
+  - id: paralives-overlay
+    priority: 90
+    when: { hasFile: "**/*" }
+    anchor: "**/*"
+    take: archive-root
+    placeAt: "${installPath}"
+    modType: paralives-overlay
 
 nexus:
   modId: 1          # PLACEHOLDER — set to the real Nexus mod-page id once the listing exists
@@ -31,8 +41,8 @@ tests:
         matched: paralives-overlay
         modType: paralives-overlay
         plan:
-          - ${installPath}/MyMod/textures/foo.png
-          - ${installPath}/MyMod/readme.txt
+          - /games/Hello/MyMod/textures/foo.png
+          - /games/Hello/MyMod/readme.txt
 
     - name: nested archive root passes through unchanged
       archive:
@@ -41,4 +51,4 @@ tests:
         matched: paralives-overlay
         modType: paralives-overlay
         plan:
-          - ${installPath}/wrapper/MyMod/data.bin
+          - /games/Hello/wrapper/MyMod/data.bin
