@@ -7,6 +7,7 @@ game:
   requiredFiles:
     - Paralives.exe
   logo: gameart.webp
+  nexusDomain: paralives
 
 stores:
   steam: 1118520
@@ -26,8 +27,8 @@ installers:
     modType: paralives-overlay
 
 nexus:
-  modId: 1          # PLACEHOLDER — set to the real Nexus mod-page id once the listing exists
-  fileGroupId: 1    # PLACEHOLDER — set to the real file-group id once the listing exists
+  modId: 1917
+  fileGroupId: 7446440
   displayName: Paralives Support for Vortex
 
 tests:
