@@ -12,8 +12,24 @@ jobs:
     uses: Nexus-Mods/game-description-language/.github/workflows/test.yml@gdl-mvp
     secrets: inherit
 
-  release:
+  guard-nexus-placeholders:
+    # Refuse to release while game.yaml still has PLACEHOLDER nexus IDs.
+    # Without this, GDL's release workflow would happily upload to whichever
+    # Nexus file-group has id 1 (i.e. somebody else's mod page).
     if: startsWith(github.ref, 'refs/tags/v')
     needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Ensure no PLACEHOLDER Nexus IDs in game.yaml
+        run: |
+          if grep -nF PLACEHOLDER game.yaml; then
+            echo "::error file=game.yaml::game.yaml still contains PLACEHOLDER tokens; set real nexus.modId and nexus.fileGroupId before tagging."
+            exit 1
+          fi
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: [test, guard-nexus-placeholders]
     uses: Nexus-Mods/game-description-language/.github/workflows/release.yml@gdl-mvp
     secrets: inherit
