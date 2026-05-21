@@ -3,20 +3,21 @@ gdl: 1
 game:
   id: paralives
   name: Paralives
-  executable: paralives.exe
+  executable: Paralives.exe
   requiredFiles:
-    - paralives.exe
+    - Paralives.exe
+  logo: gameart.webp
 
 stores:
-  steam: 0    # replace with the game's Steam app id
+  steam: 1118520
 
-modTypes: []     # add one entry per mod type the game supports
+modTypes: []     # added in Task 6
 
-installers: []   # add installer rules
+installers: []   # added in Task 6
 
 nexus:
-  modId: 0          # the mod-page id from your nexusmods.com URL (e.g. /mods/1234 → 1234)
-  fileGroupId: 0    # the file-group id Nexus shows on the upload page
+  modId: 1          # PLACEHOLDER — set to the real Nexus mod-page id once the listing exists
+  fileGroupId: 1    # PLACEHOLDER — set to the real file-group id once the listing exists
   displayName: Paralives Support for Vortex
 
 tests:
