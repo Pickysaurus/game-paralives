@@ -1,28 +1,51 @@
-# Paralives support for Vortex (GDL)
+# game-paralives — Vortex extension for Paralives
 
-GDL-based Vortex extension for Paralives. The game's behavior is described in
-[`game.yaml`](./game.yaml); the GDL toolchain in [`gdl/`](./gdl/) compiles it into a
-Vortex extension bundle.
+Adds [Paralives](https://store.steampowered.com/app/1118520/) support to the
+[Vortex](https://www.nexusmods.com/about/vortex/) mod manager.
+
+**Status:** v0.x — early. Paralives Early Access ships May 25, 2026, and a
+number of values in `game.yaml` (executable name, mod folder layout, Nexus
+mod-page IDs) are verified only after EA is available. Expect rapid iteration.
+
+## What it does (v1)
+
+- Auto-discovers a Steam install of Paralives (App ID `1118520`).
+- Treats any installed archive as a "Paralives Overlay" mod and hardlinks its
+  contents into the game's install directory. Vortex handles conflict
+  resolution and undeploy as normal.
+
+## Install
+
+**End users:** drag the latest release `.zip` from [Releases](../../releases)
+onto Vortex's Extensions tab, restart Vortex.
+
+**From source:**
+
+```bash
+git clone --recursive https://github.com/<you>/game-paralives.git
+cd game-paralives
+pnpm install
+pnpm build
+pnpm package
+# out/paralives-vortex-v<ver>.zip — drag into Vortex
+```
 
 ## Develop
 
 ```bash
-pnpm install
-pnpm run build    # compiles game.yaml → dist/extension.js
-pnpm test         # runs inline test cases from game.yaml
+pnpm install              # one time
+pnpm build                # produces dist/extension.js via gdl
+pnpm test                 # builds and runs the codegen'd tests
+pnpm package              # produces out/paralives-vortex-v<ver>.zip
 ```
 
-## Release
+The whole extension is declared in `game.yaml`. The build pipeline is
+[`Nexus-Mods/game-description-language`](https://github.com/Nexus-Mods/game-description-language)
+(loaded via the `gdl/` git submodule).
 
-Bump `package.json#version`, commit, tag `v<version>`, push. CI does the rest.
+See [`docs/superpowers/specs/`](docs/superpowers/specs/) for the design and
+[`docs/superpowers/plans/`](docs/superpowers/plans/) for the implementation plan.
 
-## Files
+## License
 
-| Path                | Purpose                                            |
-|---------------------|----------------------------------------------------|
-| `game.yaml`         | The whole extension definition                     |
-| `src/hooks.ts`      | TypeScript hooks (version detection, etc.) — optional |
-| `gdl/`              | The GDL toolchain (git submodule, pinned)          |
-| `tests/cache/`      | Cached Nexus archive manifests (gitignored)        |
-| `.gdl-out/`         | Generated TS + maps + tests (gitignored)           |
-| `dist/`             | Webpack bundle output (gitignored)                 |
+GPL-3.0. See [LICENSE](LICENSE).
