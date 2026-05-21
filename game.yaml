@@ -22,4 +22,23 @@ nexus:
 
 tests:
   corpus: off
-  cases: []
+  cases:
+    - name: loose file overlay drops to install root
+      archive:
+        - MyMod/textures/foo.png
+        - MyMod/readme.txt
+      expect:
+        matched: paralives-overlay
+        modType: paralives-overlay
+        plan:
+          - MyMod/textures/foo.png
+          - MyMod/readme.txt
+
+    - name: nested archive root passes through unchanged
+      archive:
+        - wrapper/MyMod/data.bin
+      expect:
+        matched: paralives-overlay
+        modType: paralives-overlay
+        plan:
+          - wrapper/MyMod/data.bin
