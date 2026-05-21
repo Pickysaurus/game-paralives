@@ -9,7 +9,7 @@
     "build":       "node gdl/dist/cli.js build",
     "test":        "node gdl/dist/cli.js build && vitest run .gdl-out/tests.gen.ts",
     "test:corpus": "node gdl/dist/cli.js test:corpus",
-    "package":     "node gdl/dist/cli.js package",
+    "package":     "node gdl/dist/cli.js build && cp gameart.webp dist/ && node gdl/dist/cli.js package",
     "init-gdl":    "cd gdl && pnpm install && pnpm build"
   },
   "devDependencies": {

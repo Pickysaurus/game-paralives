@@ -39,6 +39,10 @@ pnpm test                 # builds and runs the codegen'd tests
 pnpm package              # produces out/paralives-vortex-v<ver>.zip
 ```
 
+The `package` script copies `gameart.webp` into `dist/` before `gdl package`
+zips the output, because GDL does not currently copy declared `game.logo`
+assets into `dist/` on its own. Follow-up to fix in GDL upstream.
+
 The whole extension is declared in `game.yaml`. The build pipeline is
 [`Nexus-Mods/game-description-language`](https://github.com/Nexus-Mods/game-description-language)
 (loaded via the `gdl/` git submodule).
