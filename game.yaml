@@ -12,12 +12,28 @@ game:
 stores:
   steam: 1118520
 
+context:
+  localModsPath: "${appDataLocalLow}/Paralives/Paralives"
+
 modTypes:
+  - id: paralives-mod
+    name: Paralives Mod
+    path: "${localModsPath}"
   - id: paralives-overlay
     name: Paralives Overlay
     path: "${installPath}"
 
 installers:
+  # .mod folders (contain .mod.meta) → LocalLow
+  - id: paralives-mod
+    priority: 80
+    when: { hasFile: "**/*.mod.meta" }
+    anchor: "**/*.mod.meta"
+    take: archive-root
+    placeAt: "."
+    modType: paralives-mod
+
+  # Everything else → install dir overlay (catch-all)
   - id: paralives-overlay
     priority: 90
     when: { hasFile: "**/*" }
@@ -34,6 +50,19 @@ nexus:
 tests:
   corpus: off
   cases:
+    - name: mod folder with .mod.meta goes to LocalLow
+      archive:
+        - CustomFurniture.mod/CustomFurniture.mod.meta
+        - CustomFurniture.mod/Furniture/Chair/Chair.asset
+        - CustomFurniture.mod/Furniture/Chair/Chair.asset.meta
+      expect:
+        matched: paralives-mod
+        modType: paralives-mod
+        plan:
+          - ./CustomFurniture.mod/CustomFurniture.mod.meta
+          - ./CustomFurniture.mod/Furniture/Chair/Chair.asset
+          - ./CustomFurniture.mod/Furniture/Chair/Chair.asset.meta
+
     - name: loose file overlay drops to install root
       archive:
         - MyMod/textures/foo.png
