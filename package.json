@@ -1,6 +1,6 @@
 {
   "name": "game-paralives",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "private": true,
   "description": "Vortex extension for Paralives",
   "packageManager": "pnpm@11.0.9",
