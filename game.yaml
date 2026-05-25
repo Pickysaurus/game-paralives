@@ -33,6 +33,19 @@ installers:
     placeAt: "."
     modType: paralives-mod
 
+  # Loose .setting files without a .mod wrapper → Main.mod/Settings in install dir.
+  # These override base-game settings (e.g. disabling the censor effect).
+  - id: paralives-settings
+    priority: 85
+    when:
+      all:
+        - { hasFile: "**/*.setting" }
+        - not: { hasFile: "**/*.mod.meta" }
+    anchor: "**/*.setting"
+    take: archive-root
+    placeAt: "Main.mod/Settings"
+    modType: paralives-overlay
+
   # Everything else → install dir overlay (catch-all)
   - id: paralives-overlay
     priority: 90
@@ -42,13 +55,40 @@ installers:
     placeAt: "."
     modType: paralives-overlay
 
+validators:
+  - id: mod-folder-to-locallow
+    name: "Archives with .mod.meta are Paralives mod packages and route to LocalLow"
+    when: { hasFile: "**/*.mod.meta" }
+    assert:
+      matched: paralives-mod
+      modType: paralives-mod
+
+  - id: settings-override-to-main-mod
+    name: "Bare .setting files (no .mod wrapper) override base-game settings in Main.mod/Settings"
+    when:
+      all:
+        - { hasFile: "**/*.setting" }
+        - not: { hasFile: "**/*.mod.meta" }
+    assert:
+      matched: paralives-settings
+
+  - id: loose-files-to-overlay
+    name: "Archives without .mod.meta or .setting files fall through to install-dir overlay"
+    when:
+      all:
+        - not: { hasFile: "**/*.mod.meta" }
+        - not: { hasFile: "**/*.setting" }
+    assert:
+      matched: paralives-overlay
+      modType: paralives-overlay
+
 nexus:
   modId: 1917
   fileGroupId: 7446440
   displayName: Paralives Support for Vortex
 
 tests:
-  corpus: off
+  corpus: nexus
   cases:
     - name: mod folder with .mod.meta goes to LocalLow
       archive:
@@ -62,6 +102,17 @@ tests:
           - ./CustomFurniture.mod/CustomFurniture.mod.meta
           - ./CustomFurniture.mod/Furniture/Chair/Chair.asset
           - ./CustomFurniture.mod/Furniture/Chair/Chair.asset.meta
+
+    - name: bare setting files go to Main.mod/Settings
+      archive:
+        - DisableWeather.setting
+        - DisableWeather.setting.meta
+      expect:
+        matched: paralives-settings
+        modType: paralives-overlay
+        plan:
+          - Main.mod/Settings/DisableWeather.setting
+          - Main.mod/Settings/DisableWeather.setting.meta
 
     - name: loose file overlay drops to install root
       archive:
