@@ -73,14 +73,20 @@ validators:
       matched: paralives-settings
 
   - id: loose-files-to-overlay
-    name: "Archives without .mod.meta or .setting files fall through to install-dir overlay"
+    name: "Multi-file archives without .mod.meta or .setting files overlay the install dir"
     when:
       all:
+        - { hasFiles: ["**/*", "**/*/*"] }
         - not: { hasFile: "**/*.mod.meta" }
         - not: { hasFile: "**/*.setting" }
     assert:
       matched: paralives-overlay
       modType: paralives-overlay
+
+  # Known limitation: bare plugin DLLs (BepInEx/MelonLoader) can't be auto-routed
+  # to the correct subfolder without metadata. Mod authors should package with
+  # folder structure (e.g. BepInEx/plugins/Foo.dll or Mods/Foo.dll).
+  # For now these land at the install root via the catch-all overlay.
 
 nexus:
   modId: 1917
