@@ -9,6 +9,11 @@ game:
   logo: gameart.webp
   nexusDomain: paralives
 
+discovery:
+  version:
+    file: "${installPath}/Main.mod/Settings/GameVersion.setting"
+    regex: "=VersionPrefix:(\\d+\\.\\d+\\.\\d+)"
+
 stores:
   steam: 1118520
 
