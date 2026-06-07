@@ -8,6 +8,8 @@ game:
     - Paralives.exe
   logo: gameart.webp
   nexusDomain: paralives
+  details:
+    steamAppId: 1118520
 
 discovery:
   version:
